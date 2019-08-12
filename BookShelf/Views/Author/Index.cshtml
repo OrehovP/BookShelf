@@ -1,0 +1,63 @@
+﻿@model IEnumerable<LogicLayer.PresentationModel.PAuthor>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="m-0 p-0">
+    <div class="container-fluid w-75">
+        <nav class="navbar navbar-expand navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav m-1">
+                    <li class="nav-item m-1">
+                        @Html.ActionLink("Авторы", "Index", "Author", null, new { @class = "btn btn-primary" })
+                    </li>
+                    <li class="nav-item m-1">
+                        @Html.ActionLink("Книги", "Index", "Home", null, new { @class = "btn btn-primary" })
+                    </li>
+                    <li class="nav-item m-1">
+                        @Html.ActionLink("Жанры", "Index", "Genre", null, new { @class = "btn btn-primary" })
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="m-3">
+            <div class="row mt-2">
+                <h1 class="col-10 ">Авторы</h1>
+                <div class="col-2">
+                    @Html.ActionLink("Cоздать автора", "CreateEdit", null, new {@class = "btn btn-primary btn-lg float-right" })
+                </div>
+            </div>
+            <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="card col-4 mb-2">
+                    <div class="card-title">
+                        <h4>@Html.DisplayFor(modelItem => item.Name)</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Дата рождения: @item.DateBorn.ToString("dd.MM.yyyy")</p>
+                    </div>
+                    <div class="form-control form-inline mb-1 h-100 justify-content-center">
+                        @Html.ActionLink("Книги", "GetBooks", new { id = item.Id }, new { @class = "btn btn-primary m-1" })
+                        @Html.ActionLink("Изменить", "CreateEdit", new { id = item.Id }, new { @class = "btn btn-primary m-1" })
+                        @if (item.CanDelete)
+                        {
+                            @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "btn btn-primary m-1" })
+                        }
+                    </div>
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

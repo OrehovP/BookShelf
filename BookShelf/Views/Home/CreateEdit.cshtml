@@ -1,0 +1,110 @@
+﻿@model LogicLayer.PresentationModel.CreateEditBook
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CreateEdit</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+</head>
+<body class="p-0 m-0">
+    <div class="container-fluid w-75">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            @Html.HiddenFor(model => model.Form.Id)
+
+            <div class="form-group">
+                @Html.Label("Название", htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Form.Name, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Form.Name, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Автор", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Form.AuthorId, Model.Authors, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Form.AuthorId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                @Html.Label("Жанры (выберите один или несколько)", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-10">
+                    @Html.ListBoxFor(model => model.Form.GenreIds, Model.Genres, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Form.GenreIds, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+            <div class="form-group">
+                @Html.Label("Жанры (выберите один или несколько)", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-10">
+                    @foreach (var item in Model.Genres)
+                    {
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                   name="Form.GenreIds"
+                                   value="@item.Id"
+                                   @if(Model.Form.GenreIds.Contains(item.Id))
+                                   {
+                                       <text> checked </text> 
+                                   } 
+                            /> @item.Name
+                        </label>
+                    </div>
+                    }
+
+                    @Html.ValidationMessageFor(model => model.Form.GenreIds, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Дата публикации", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @if (Model == null)
+                    {
+                        @Html.EditorFor(model => model.Form.PublicationDate, new { htmlAttributes = new { @class = "form-control", @id = "datep" } })
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.Form.PublicationDate, new { htmlAttributes = new { @class = "form-control", @id = "datep", @Value = Model.Form.PublicationDate.ToString("dd.MM.yyyy") } })
+                    }
+                    @Html.ValidationMessageFor(model => model.Form.PublicationDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                 @Html.Label("Описание", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => Model.Form.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Form.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Сохранить изменения" class="btn btn-primary" />
+                @Html.ActionLink("Вернуться на главную", "Index", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+}
+    </div>
+    <script>
+        $(function () {
+            $('#datep').datepicker({ dateFormat: 'dd.mm.yy' });
+        });
+    </script>
+</body>
+</html>

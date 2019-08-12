@@ -1,0 +1,31 @@
+﻿@model LogicLayer.PresentationModel.CreateEditGenre
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="m-0 p-0">
+    <div class="container-fluid w-75">
+        <div class="mt-5">
+            <h3>Вы уверены что хотите удалить этот жанр?</h3>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Удалить жанр" class="btn btn-danger" />
+                    @Html.ActionLink("Вернуться на главную", "Index", null, new { @class = "btn btn-primary" })
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
